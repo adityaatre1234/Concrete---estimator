@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProBuild Estimator | Civil Engineering Tool</title>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- HTML2PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-helmet-safety"></i> ProBuild <span>Estimator</span>
+        </div>
+        <div class="nav-links">
+            <button onclick="switchTab('concrete')" class="active">Concrete</button>
+            <button onclick="switchTab('brickwork')">Brickwork</button>
+            <button onclick="switchTab('plaster')">Plaster</button>
+            <button onclick="switchTab('steel')">Steel</button>
+            <button onclick="switchTab('total')">Total House</button>
+        </div>
+        <div class="controls">
+            <button id="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <!-- SECTION: CONCRETE ESTIMATOR -->
+        <section id="concrete" class="estimator-section active">
+            <div class="card">
+                <h2><i class="fa-solid fa-layer-group"></i> Concrete Cost Estimator</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Area (Sq. Ft)</label>
+                        <input type="number" id="c-area" placeholder="e.g. 1000">
+                    </div>
+                    <div class="input-group">
+                        <label>Slab Thickness (mm)</label>
+                        <input type="number" id="c-thickness" value="125">
+                    </div>
+                    <div class="input-group">
+                        <label>Concrete Grade</label>
+                        <select id="c-grade">
+                            <option value="M10">M10 (1:3:6)</option>
+                            <option value="M15">M15 (1:2:4)</option>
+                            <option value="M20" selected>M20 (1:1.5:3)</option>
+                            <option value="M25">M25 (1:1:2)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Cement Price ($/Bag)</label>
+                        <input type="number" id="c-cement-price" value="10">
+                    </div>
+                    <div class="input-group">
+                        <label>Sand Price ($/m³)</label>
+                        <input type="number" id="c-sand-price" value="30">
+                    </div>
+                    <div class="input-group">
+                        <label>Aggregate Price ($/m³)</label>
+                        <input type="number" id="c-agg-price" value="40">
+                    </div>
+                    <div class="input-group">
+                        <label>Labor Cost ($/m³)</label>
+                        <input type="number" id="c-labor-price" value="15">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="calculateConcrete()">Calculate Estimate</button>
+            </div>
+
+            <div class="results-container" id="c-results">
+                <!-- Results injected here via JS -->
+            </div>
+        </section>
+
+        <!-- SECTION: BRICKWORK ESTIMATOR -->
+        <section id="brickwork" class="estimator-section">
+            <div class="card">
+                <h2><i class="fa-solid fa-cubes"></i> Brickwork Estimator</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Wall Area (Sq. Ft)</label>
+                        <input type="number" id="b-area" placeholder="e.g. 500">
+                    </div>
+                    <div class="input-group">
+                        <label>Wall Thickness (Inches)</label>
+                        <select id="b-thickness">
+                            <option value="4.5">4.5" (Half Brick)</option>
+                            <option value="9">9" (One Brick)</option>
+                            <option value="13.5">13.5" (1.5 Brick)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Brick Price ($/pc)</label>
+                        <input type="number" id="b-brick-price" value="0.50">
+                    </div>
+                    <div class="input-group">
+                        <label>Mortar Price ($/m³)</label>
+                        <input type="number" id="b-mortar-price" value="25">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="calculateBrickwork()">Calculate Estimate</button>
+            </div>
+            <div class="results-container" id="b-results"></div>
+        </section>
+
+        <!-- SECTION: PLASTER ESTIMATOR -->
+        <section id="plaster" class="estimator-section">
+            <div class="card">
+                <h2><i class="fa-solid fa-paint-roller"></i> Plaster Estimator</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Area to Plaster (Sq. Ft)</label>
+                        <input type="number" id="p-area" placeholder="e.g. 800">
+                    </div>
+                    <div class="input-group">
+                        <label>Thickness (mm)</label>
+                        <input type="number" id="p-thickness" value="12">
+                    </div>
+                    <div class="input-group">
+                        <label>Mix Ratio</label>
+                        <select id="p-ratio">
+                            <option value="1:4">1:4 (External)</option>
+                            <option value="1:6">1:6 (Internal)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Cement Price ($/Bag)</label>
+                        <input type="number" id="p-cement-price" value="10">
+                    </div>
+                    <div class="input-group">
+                        <label>Sand Price ($/m³)</label>
+                        <input type="number" id="p-sand-price" value="30">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="calculatePlaster()">Calculate Estimate</button>
+            </div>
+            <div class="results-container" id="p-results"></div>
+        </section>
+
+        <!-- SECTION: STEEL ESTIMATOR -->
+        <section id="steel" class="estimator-section">
+            <div class="card">
+                <h2><i class="fa-solid fa-bars"></i> Steel Reinforcement Estimator</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Total Built-up Area (Sq. Ft)</label>
+                        <input type="number" id="s-area" placeholder="e.g. 1200">
+                    </div>
+                    <div class="input-group">
+                        <label>Structure Type</label>
+                        <select id="s-type">
+                            <option value="1.5">Residential (Light)</option>
+                            <option value="2.0">Residential (Standard)</option>
+                            <option value="2.5">Commercial (Heavy)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Steel Price ($/kg)</label>
+                        <input type="number" id="s-price" value="0.90">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="calculateSteel()">Calculate Estimate</button>
+            </div>
+            <div class="results-container" id="s-results"></div>
+        </section>
+
+        <!-- SECTION: TOTAL HOUSE ESTIMATOR -->
+        <section id="total" class="estimator-section">
+            <div class="card">
+                <h2><i class="fa-solid fa-house-chimney"></i> Complete House Cost Estimator</h2>
+                <p class="subtext">Uses standard averages based on built-up area.</p>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Total Built-up Area (Sq. Ft)</label>
+                        <input type="number" id="t-area" placeholder="e.g. 1500">
+                    </div>
+                    <div class="input-group">
+                        <label>Quality of Construction</label>
+                        <select id="t-quality">
+                            <option value="1000">Economy ($1000/sqft)</option>
+                            <option value="1500" selected>Standard ($1500/sqft)</option>
+                            <option value="2200">Premium ($2200/sqft)</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="calculateTotal()">Calculate Total Project Cost</button>
+            </div>
+            <div class="results-container" id="t-results"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2023 ProBuild Estimator. Built for Civil Engineers.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
